@@ -3,6 +3,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      foo: {
+        files: [
+        //Fix what are the best practices for concat?
+           {src: ['server.js', 'server-config.js'], dest: 'dest/superserver.js'}
+        ],
+      },
+      
     },
 
     mochaTest: {
@@ -21,6 +28,11 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      myTarget: {
+        files: {
+          'dest/output.min.js': ['dest/superserver.js']
+        }
+      }
     },
 
     eslint: {
@@ -56,14 +68,16 @@ module.exports = function(grunt) {
     },
   });
 
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
-  grunt.loadNpmTasks('grunt-eslint');
-  grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-nodemon');
+  // grunt.loadNpmTasks('grunt-contrib-uglify');
+  // grunt.loadNpmTasks('grunt-contrib-watch');
+  // grunt.loadNpmTasks('grunt-contrib-concat');
+  // grunt.loadNpmTasks('grunt-contrib-cssmin');
+  // grunt.loadNpmTasks('grunt-eslint');
+  // grunt.loadNpmTasks('grunt-mocha-test');
+  // grunt.loadNpmTasks('grunt-shell');
+  // grunt.loadNpmTasks('grunt-nodemon');
+
+  require('load-grunt-tasks')(grunt);
 
   grunt.registerTask('server-dev', function (target) {
     grunt.task.run([ 'nodemon', 'watch' ]);
@@ -78,6 +92,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'nodemon'
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -89,7 +104,9 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
+    'concat', 'uglify', 'upload'
       // add your production server task here
+
   ]);
 
 
