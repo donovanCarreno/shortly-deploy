@@ -1,3 +1,4 @@
+console.log('starting server config');
 var express = require('express');
 var partials = require('express-partials');
 var bodyParser = require('body-parser');
@@ -5,7 +6,9 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var util = require('./lib/utility');
 // DELETE THIS COMMENT
+console.log('before request handler');
 var handler = require('./lib/request-handler');
+console.log('after request handler');
 
 var app = express();
 
@@ -22,7 +25,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.get('/', util.checkUser, handler.renderIndex);
+app.get('/', handler.renderIndex); // util.checkUser, 
 app.get('/create', util.checkUser, handler.renderIndex);
 
 app.get('/links', util.checkUser, handler.fetchLinks);
